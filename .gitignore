@@ -5,3 +5,7 @@
 /WebAppFirst/.vs
 /WebAppFirst/WebAppFirst/bin/Debug/net8.0
 /WebAppFirst/WebAppFirst/obj
+/.vs
+/WebAppData/.vs/WebAppData
+/WebAppData/WebAppData/bin/Debug/net8.0
+/WebAppData/WebAppData/obj
