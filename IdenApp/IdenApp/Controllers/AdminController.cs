@@ -1,9 +1,10 @@
 ﻿using IdenApp.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IdenApp.Controllers
 {
-
+    [Authorize(Roles ="Admin")]
     public class AdminController : Controller
     {
         ApplicationDbContext _context;
