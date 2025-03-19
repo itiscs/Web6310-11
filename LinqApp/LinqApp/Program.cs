@@ -50,4 +50,3 @@ foreach (var st in expr.GroupBy(s=>s.Faculty))
 {
     Console.WriteLine($"{st.Key} {st.Count()}");
 }
-`
