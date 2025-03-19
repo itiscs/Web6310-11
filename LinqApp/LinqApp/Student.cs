@@ -6,17 +6,39 @@ using System.Threading.Tasks;
 
 namespace LinqApp
 {
+    public class Group
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Faculty { get; set; }
+        public string Address { get; set; }
+
+        public override string ToString()
+        {
+            return $"{Id} {Name} {Faculty} {Address}";
+        }
+
+        public static List<Group> GetGroups()
+        {
+            var groups = new List<Group>();
+            groups.Add(new Group() { Id = 1, Name = "6310", Faculty = "Экономический", Address = "adr 1" });
+            groups.Add(new Group() { Id = 2, Name = "6311", Faculty = "Экономический", Address = "adr 1" });
+            groups.Add(new Group() { Id = 3, Name = "9090", Faculty = "Математический", Address = "adr 2" });
+            return groups ;
+        }
+
+    }
     public class Student
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public string Group { get; set; }
+        public int idGroup { get; set; }
 
         public List<int> Marks { get; set; } = new List<int>();
 
         public override string ToString()
         {
-            return $"{Id} {Name} {Group} {Marks.Average()}";
+            return $"{Id} {Name} {idGroup} {Marks.Average()}";
         }
 
 
@@ -27,14 +49,14 @@ namespace LinqApp
             {
                 Id = 1,
                 Name = "Ivan",
-                Group = "6310",
+                idGroup = 1,
                 Marks = new List<int>() { 5, 5, 5, 5, 4, 4, 4 }
             });
             students.Add(new Student
             {
                 Id = 2,
                 Name = "Petr",
-                Group = "6310",
+                idGroup = 1,
                 Marks = new List<int>() { 5, 3, 3, 3, 4, 4, 4 }
             });
 
@@ -42,7 +64,7 @@ namespace LinqApp
             {
                 Id = 3,
                 Name = "Andrej",
-                Group = "6310",
+                idGroup = 1,
                 Marks = new List<int>() { 3, 3, 3, 3, 3, 3, 3, 5 }
             });
 
@@ -50,7 +72,7 @@ namespace LinqApp
             {
                 Id = 4,
                 Name = "Ivan 4",
-                Group = "6310",
+                idGroup = 2,
                 Marks = new List<int>() { 5, 5, 5, 5}
             });
 
@@ -58,7 +80,7 @@ namespace LinqApp
             {
                 Id = 5,
                 Name = "Ivan 5",
-                Group = "6310",
+                idGroup = 2,
                 Marks = new List<int>() {5, 4, 4, 4 }
             });
 
@@ -66,7 +88,7 @@ namespace LinqApp
             {
                 Id = 6,
                 Name = "Ivan 6",
-                Group = "6311",
+                idGroup = 2,
                 Marks = new List<int>() { 2,2,2,2, 4, 4, 4 }
             });
 
@@ -74,7 +96,7 @@ namespace LinqApp
             {
                 Id = 7,
                 Name = "Ivan 7",
-                Group = "6311",
+                idGroup = 2,
                 Marks = new List<int>() { 3,3,3,3,3,3 }
             });
 
@@ -82,7 +104,7 @@ namespace LinqApp
             {
                 Id = 8,
                 Name = "Ivan 8 ",
-                Group = "6311",
+                idGroup = 2,
                 Marks = new List<int>() { 5, 5, 5, 5, 4, 4, 4 }
             });
 
