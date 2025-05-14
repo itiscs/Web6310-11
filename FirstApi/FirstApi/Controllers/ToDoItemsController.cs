@@ -24,6 +24,7 @@ namespace FirstApi.Controllers
 
         // GET: api/ToDoItems
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<ToDoItem>>> GetTodoItems()
         {
             return await _context.TodoItems.ToListAsync();
@@ -46,6 +47,7 @@ namespace FirstApi.Controllers
         // PUT: api/ToDoItems/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [Authorize(Roles="admin")]
         public async Task<IActionResult> PutToDoItem(long id, ToDoItem toDoItem)
         {
             if (id != toDoItem.Id)
@@ -77,6 +79,7 @@ namespace FirstApi.Controllers
         // POST: api/ToDoItems
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public async Task<ActionResult<ToDoItem>> PostToDoItem(ToDoItem toDoItem)
         {
             _context.TodoItems.Add(toDoItem);
@@ -87,6 +90,7 @@ namespace FirstApi.Controllers
 
         // DELETE: api/ToDoItems/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> DeleteToDoItem(long id)
         {
             var toDoItem = await _context.TodoItems.FindAsync(id);
