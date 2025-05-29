@@ -8,6 +8,7 @@ using System.Security.Claims;
 namespace FirstApi.Controllers
 {
     [ApiController]
+    [Route("api/[controller]")]
     public class AccountController : ControllerBase
     {
         private List<Person> people = new List<Person>
@@ -16,10 +17,10 @@ namespace FirstApi.Controllers
             new Person { Login="qwerty@gmail.com", Password="55555", Role = "user" }
         };
 
-        [HttpPost("/token")]
-        public IActionResult Token(string username, string password)
+        [HttpPost("token")]
+        public IActionResult Token([FromBody] TokenRequest request)
         {
-            var identity = GetIdentity(username, password);
+            var identity = GetIdentity(request.Username, request.Password);
             if (identity == null)
             {
                 return BadRequest(new { errorText = "Invalid username or password." });
@@ -65,6 +66,5 @@ namespace FirstApi.Controllers
             return null;
         }
     }
-
 }
 

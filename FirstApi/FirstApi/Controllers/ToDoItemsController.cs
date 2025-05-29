@@ -15,26 +15,28 @@ namespace FirstApi.Controllers
     [ApiController]
     public class ToDoItemsController : ControllerBase
     {
-        private readonly MyBaseContext _context;
+        //private readonly MyBaseContext _context;
+        private readonly ITodoItemRepository _repo;
 
-        public ToDoItemsController(MyBaseContext context)
+        public ToDoItemsController(ITodoItemRepository repo)
         {
-            _context = context;
+            _repo = repo;
         }
 
         // GET: api/ToDoItems
         [HttpGet]
-        [Authorize]
+       // [Authorize]
         public async Task<ActionResult<IEnumerable<ToDoItem>>> GetTodoItems()
         {
-            return await _context.TodoItems.ToListAsync();
+            var todos = await _repo.GetTodos();
+            return todos.ToList();
         }
 
         // GET: api/ToDoItems/5
         [HttpGet("{id}")]
         public async Task<ActionResult<ToDoItem>> GetToDoItem(long id)
         {
-            var toDoItem = await _context.TodoItems.FindAsync(id);
+            var toDoItem = await _repo.GetTodoByID(id);
 
             if (toDoItem == null)
             {
@@ -47,7 +49,7 @@ namespace FirstApi.Controllers
         // PUT: api/ToDoItems/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        [Authorize(Roles="admin")]
+       // [Authorize(Roles="admin")]
         public async Task<IActionResult> PutToDoItem(long id, ToDoItem toDoItem)
         {
             if (id != toDoItem.Id)
@@ -55,11 +57,11 @@ namespace FirstApi.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(toDoItem).State = EntityState.Modified;
+            await _repo.UpdateToDoItem(toDoItem);
 
             try
             {
-                await _context.SaveChangesAsync();
+                await _repo.Save();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -79,35 +81,35 @@ namespace FirstApi.Controllers
         // POST: api/ToDoItems
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        [Authorize(Roles = "admin")]
+   //     [Authorize(Roles = "admin")]
         public async Task<ActionResult<ToDoItem>> PostToDoItem(ToDoItem toDoItem)
         {
-            _context.TodoItems.Add(toDoItem);
-            await _context.SaveChangesAsync();
+            await _repo.AddToDoItem(toDoItem);
+            await _repo.Save();
 
             return CreatedAtAction("GetToDoItem", new { id = toDoItem.Id }, toDoItem);
         }
 
         // DELETE: api/ToDoItems/5
         [HttpDelete("{id}")]
-        [Authorize(Roles = "admin")]
+  //      [Authorize(Roles = "admin")]
         public async Task<IActionResult> DeleteToDoItem(long id)
         {
-            var toDoItem = await _context.TodoItems.FindAsync(id);
+            var toDoItem = await _repo.GetTodoByID(id);
             if (toDoItem == null)
             {
                 return NotFound();
             }
 
-            _context.TodoItems.Remove(toDoItem);
-            await _context.SaveChangesAsync();
+            await _repo.DeleteToDoItem(toDoItem.Id);
+            await _repo.Save();
 
             return NoContent();
         }
 
         private bool ToDoItemExists(long id)
         {
-            return _context.TodoItems.Any(e => e.Id == id);
+            return _repo.GetTodoByID(id) is not null;
         }
     }
 }
